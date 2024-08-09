@@ -13,36 +13,40 @@ block main
             th Action
         
         tbody 
-            tr 
-                td 1
-                td 
-                    img(
-                        src="https://i.dummyjson.com/data/products/1/thumbnail.jpg"
-                        alt="Product 1"
-                        width="100px"
-                        height="auto"
-                    )
-                td Product 1
-                td $549
-                td 
-                    a(href="#" class="badge text-bg-success") Active 
-                td  
-                    button(class="btn btn-warning btn-sm") Edit
-                    button(class="btn btn-danger btn-sm ml-1") Delete
-            tr 
-                td 2
-                td 
-                    img(
-                        src="https://i.dummyjson.com/data/products/2/thumbnail.jpg"
-                        alt="Product 2"
-                        width="100px"
-                        height="auto"
-                    )
-                td Product 1
-                td $899
-                td 
-                    a(href="#" class="badge text-bg-danger") No Active 
-                td  
-                    button(class="btn btn-warning btn-sm") Edit
-                    button(class="btn btn-danger btn-sm ml-1") Delete
+            each item, index in products
+                tr 
+                    td #{index + 1}
+                    td 
+                        img(
+                            src=item.thumbnail
+                            alt=item.title 
+                            width="100px"
+                            height="auto"
+                        )
+                    td #{item.title}
+                    td #{item.price}
+                    td 
+                        if(item.status == "active")
+                            a(href="#" class="badge text-bg-success") Active 
+                        else 
+                            a(href="#" class="badge text-bg-danger") No Active 
+                    td  
+                        button(class="btn btn-warning btn-sm") Edit
+                        button(class="btn btn-danger btn-sm ml-1") Delete
+            //- tr 
+            //-     td 2
+            //-     td 
+            //-         img(
+            //-             src="https://i.dummyjson.com/data/products/2/thumbnail.jpg"
+            //-             alt="Product 2"
+            //-             width="100px"
+            //-             height="auto"
+            //-         )
+            //-     td Product 1
+            //-     td $899
+            //-     td 
+            //-         a(href="#" class="badge text-bg-danger") No Active 
+            //-     td  
+            //-         button(class="btn btn-warning btn-sm") Edit
+            //-         button(class="btn btn-danger btn-sm ml-1") Delete
                 
