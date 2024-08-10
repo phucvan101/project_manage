@@ -52,3 +52,11 @@
 }
 
 /* End sider */
+
+
+/* Products list */
+.button-container {
+    display: flex;
+    gap: 10px;
+    /* Khoảng cách giữa các nút */
+}
