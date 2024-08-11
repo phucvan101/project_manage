@@ -2,11 +2,27 @@ extend ../../layouts/default.pug
 
 block main
     h1 Products List  
-    .card.mb-3 
-        .card-header FilterAndSearch
-        .card-body
-            each item in filterStatus
-                button(class=`btn btn-sm ml-1 btn-outline-success ${item.class}` button-status=item.status) #{item.name} 
+    .card-header FilterAndSearch
+    .card-body
+        .row 
+            .col-6
+                each item in filterStatus
+                    button(class=`btn btn-sm ml-1 btn-outline-success ${item.class}` button-status=item.status) #{item.name} 
+            .col-6 
+                form(id="form-search")
+                    .input-group
+                        input(
+                            type="text"
+                            placeholder="Enter keyword"
+                            name="keyword"
+                            class="form-control"
+                            value = keyword 
+                        )
+                        .input-group-append
+                            button(
+                                class="btn btn-success"
+                                type="submit"
+                            ) Find
 
     .card-header Products List 
         .card-body 
@@ -40,20 +56,3 @@ block main
                             td  
                                 button(class="btn btn-warning btn-sm") Edit
                                 button(class="btn btn-danger btn-sm ml-1") Delete
-            //- tr 
-            //-     td 2
-            //-     td 
-            //-         img(
-            //-             src="https://i.dummyjson.com/data/products/2/thumbnail.jpg"
-            //-             alt="Product 2"
-            //-             width="100px"
-            //-             height="auto"
-            //-         )
-            //-     td Product 1
-            //-     td $899
-            //-     td 
-            //-         a(href="#" class="badge text-bg-danger") No Active 
-            //-     td  
-            //-         button(class="btn btn-warning btn-sm") Edit
-            //-         button(class="btn btn-danger btn-sm ml-1") Delete
-                
