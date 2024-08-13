@@ -19,14 +19,31 @@ module.exports.index = async (req, res) => {
     if (objectSearch.regex) {
         find.title = objectSearch.regex;
     }
+    // Pagination: Phan trang 
+    let objectPagination = {
+        limitItems: 4,
+        currentPage: 1,
+    }
+    if (req.query.page) {
+        objectPagination.currentPage = parseInt(req.query.page);
+    }
+    objectPagination.skip = (objectPagination.currentPage - 1) * objectPagination.limitItems;
 
-    const products = await Product.find(find);
+    const countProducts = await Product.countDocuments(find);
+    const totalPage = Math.ceil(countProducts / objectPagination.limitItems);
+    // console.log(totalPage)
+    objectPagination.totalPage = totalPage;
+    // End Pagination
+
+
+    const products = await Product.find(find).limit(objectPagination.limitItems).skip(objectPagination.skip);
     // console.log(products);
     res.render("admin/pages/products/index", {
         pageTitle: "Products List",
         products: products,
         filterStatus: filterStatus,
         keyword: objectSearch.keyword,
+        pagination: objectPagination
     }
     );
 }
