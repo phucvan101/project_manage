@@ -1,5 +1,6 @@
 require('dotenv').config();
 const express = require('express');
+const bodyParser = require('body-parser');
 const methodOverride = require('method-override'); // ghi đè phương thức khác lên html 
 const database = require('./config/database')
 const systemConfig = require('./config/system');
@@ -11,6 +12,7 @@ const port = process.env.PORT;
 
 
 app.use(methodOverride('_method'))
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static("public"));
 app.set("views", "./views");
 app.set("view engine", "pug");

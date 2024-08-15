@@ -58,3 +58,68 @@ if (buttonsPagination) {
     })
 }
 //*End pagination*/
+
+//*Checkbox Multi*//
+const checkboxMulti = document.querySelector("[checkbox-multi]");
+if (checkboxMulti) {
+    const inputCheckAll = checkboxMulti.querySelector("input[name='checkall']");
+    const inputsId = checkboxMulti.querySelectorAll("input[name='id']");
+    inputCheckAll.addEventListener("click", () => {
+        // console.log(inputCheckAll.checked);
+        if (inputCheckAll.checked) {
+            inputsId.forEach(input => {
+                input.checked = true;
+            });
+        }
+        else {
+            inputsId.forEach(input => {
+                input.checked = false;
+            });
+        }
+    });
+    inputsId.forEach(input => {
+        input.addEventListener("click", () => {
+            const countChecked = checkboxMulti.querySelectorAll("input[name='id']:checked").length;
+            // console.log(countChecked);
+            // console.log(inputsId.length);
+            if (countChecked == inputsId.length) {
+                inputCheckAll.checked = true;
+            }
+            else {
+                inputCheckAll.checked = false;
+            }
+
+        });
+    })
+}
+//* End Checkbox Multi *//
+
+
+// * Form Change multi *//
+const formChangeMulti = document
+    .querySelector("[form-change-multi]");
+if (formChangeMulti) {
+    // console.log(formChangeMulti);
+    formChangeMulti.addEventListener("submit", (e) => {
+        e.preventDefault(); // prevent page reload
+        // console.log(e);
+        const checkboxMulti = document.querySelector("[checkbox-multi]");
+        const inputsChecked = checkboxMulti.querySelectorAll("input[name='id']:checked");
+        // console.log(inputsChecked);
+        if (inputsChecked.length > 0) {
+            let ids = [];
+            const inputIds = formChangeMulti.querySelector("input[name='ids']");
+            inputsChecked.forEach(input => {
+                const id = input.value;
+                ids.push(id);
+            })
+            console.log(ids.join(", "));
+            inputIds.value = ids.join(", ");
+            formChangeMulti.submit();
+        } else {
+            alert("Please select at least one record");
+        }
+    });
+
+}
+// * Form Change multi *// 

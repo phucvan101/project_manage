@@ -1,1 +1,2 @@
 * Thư viện method-override: dùng để ghi đè phương thức khác ngoài get or post lên html
+* Thư viện body-parser: Phân tích nội dung yêu cầu đến trong phần mềm trung gian trước trình xử lý của bạn, có sẵn trong thuộc tính req.body.
