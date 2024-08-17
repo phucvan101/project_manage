@@ -3,8 +3,11 @@ include ../../mixin/filter-status.pug
 include ../../mixin/search.pug
 include ../../mixin/pagination.pug
 include ../../mixin/form-change-multi.pug
+include ../../mixin/alert.pug
 
 block main
+    +alert-success(5000)
+            
     h1 Products List  
     .card-header FilterAndSearch
     .card-body

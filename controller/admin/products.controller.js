@@ -63,7 +63,7 @@ module.exports.changeStatus = async (req, res) => {
     const id = req.params.id;
 
     await Product.updateOne({ _id: id }, { status: status });
-
+    req.flash("success", "Updated Status successfully")
     res.redirect('back');
 }
 
@@ -77,9 +77,11 @@ module.exports.changMulti = async (req, res) => {
     switch (type) {
         case "active":
             await Product.updateMany({ _id: { $in: ids } }, { status: "active" })
+            req.flash("success", `Update Status Of ${ids.length} Products Successfully!!!`)
             break;
         case "inactive":
             await Product.updateMany({ _id: { $in: ids } }, { status: "inactive" })
+            req.flash("success", `Update Status Of ${ids.length} Products Successfully!!!`)
             break;
         case "delete-all":
             await Product.updateMany({ _id: { $in: ids } }, { deleted: true, deletedAt: new Date() })
