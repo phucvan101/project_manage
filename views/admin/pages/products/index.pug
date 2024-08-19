@@ -19,7 +19,14 @@ block main
 
     .card-header Products List 
         .card-body 
-            +form-change-multi(`${prefixAdmin}/products/change-multi?_method=PATCH`)
+            .row
+                .col-8 
+                    +form-change-multi(`${prefixAdmin}/products/change-multi?_method=PATCH`)
+                .col-4 
+                    a(
+                        href=`${prefixAdmin}/products/create`
+                        class="btn btn-outline-success"
+                    ) + Add New
             table(
                 class="table table-hover table-sm"
                 checkbox-multi 
@@ -79,7 +86,7 @@ block main
                                         data-id=item.id
                                         button-change-status  
                                         class="badge text-bg-danger"
-                                    ) No Active 
+                                    ) Inactive 
                             td  
                                 button(class="btn btn-warning btn-sm") Edit
                                 button(
