@@ -1,10 +1,12 @@
-// [GET] /admin/products 
 
 const Product = require("../../models/product.model")
 const systemConfig = require("../../config/system")
 const filterStatusHelper = require("../../helpers/filterStatus")
 const searchHelper = require("../../helpers/search")
 const paginationHelper = require("../../helpers/pagination")
+
+
+// [GET] /admin/products 
 module.exports.index = async (req, res) => {
     // console.log(req.query.status);
     const filterStatus = filterStatusHelper(req.query);
@@ -151,3 +153,48 @@ module.exports.createPost = async (req, res) => {
     console.log(req.file)
     // res.send("ok")
 };
+
+//[GET] /admin/products/edit/:id
+module.exports.edit = async (req, res) => {
+    try {
+        // console.log(req.params.id) // params: trường data động 
+
+        const find = {
+            deleted: false,
+            _id: req.params.id
+        };
+
+        const product = await Product.findOne(find)
+        // console.log(product);
+        res.render("admin/pages/products/edit", {
+            pageTitle: "Edit Products",
+            product: product
+        });
+    } catch (error) {
+        res.redirect(`${systemConfig.prefixAdmin}/products`);
+    }
+};
+
+
+//[PATCH] /admin/products/edit/:id
+module.exports.editPatch = async (req, res) => {
+    const id = req.params.id;
+    req.body.price = parseInt(req.body.price)
+    req.body.discountPercentage = parseInt(req.body.discountPercentage)
+    req.body.stock = parseInt(req.body.stock)
+
+    if (req.file) {
+        req.body.thumbnail = `/uploads/${req.file.filename}`;
+    }
+
+    try {
+        await Product.updateOne({ _id: id }, req.body);
+        req.flash('success', `Updated successfully`)
+    } catch (err) {
+        req.flash('success', `Updated unsuccessfully`)
+    }
+
+    res.redirect(`back`)
+    // console.log(req.body)
+};
+
