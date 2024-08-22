@@ -1,6 +1,7 @@
 extends ../../layouts/default.pug
-
+include ../../mixin/alert.pug
 block main 
+    +alert-error(5000)
     h1(class="mb-4") Add New Product 
 
     form(
@@ -16,7 +17,6 @@ block main
                 class="form-control"
                 id="title"
                 name="title"
-                required
             )
         div(class="form-group")
             label(for="desc") Description 
@@ -74,6 +74,11 @@ block main
                 upload-image-preview
                 class="image-preview"
             )
+            button(
+                type="button"
+                class="btn btn-danger"
+                cancel-image-preview
+            ) X 
         div(class="form-group")
             label(for="position") Position 
             input(

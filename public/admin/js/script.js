@@ -167,7 +167,7 @@ if (uploadImage) {
     const uploadImageInput = document.querySelector("[upload-image-input]");
     const uploadImagePreview = document.querySelector("[upload-image-preview]");
     uploadImageInput.addEventListener("change", (e) => {
-        console.log(e);
+        // console.log(e);
         const file = e.target.files[0];
         if (file) {
             uploadImagePreview.src = URL.createObjectURL(file); // tạo một url tạm thời
@@ -175,3 +175,17 @@ if (uploadImage) {
     })
 }
 // End Upload Image
+
+// cancel upload Image
+const cancelUploadImage = document.querySelector('[cancel-image-preview]');
+if (cancelUploadImage) {
+    const uploadImageInput = document.querySelector("[upload-image-input]");
+    const uploadImagePreview = document.querySelector("[upload-image-preview]");
+    cancelUploadImage.addEventListener("click", (e) => {
+        console.log(e);
+        uploadImageInput.value = "";
+        uploadImagePreview.src = "";
+    })
+}
+
+// End cancel upload Image
