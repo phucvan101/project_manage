@@ -25,4 +25,7 @@ router.patch(
     validate.createPost,
     controller.editPatch
 );
+
+router.get("/detail/:id", controller.detail);
+
 module.exports = router;
