@@ -21,3 +21,26 @@ module.exports.index = async (req, res) => {
     });
 }
 
+// [GET] /products/:slug
+module.exports.detail = async (req, res) => {
+    console.log(req.params.slug);
+    try {
+        console.log(req.params.id) // params: trường data động 
+
+        const find = {
+            deleted: false,
+            slug: req.params.slug
+        };
+
+        const product = await Product.findOne(find)
+        // console.log(product);
+        res.render("client/pages/products/detail", {
+            pageTitle: product.title,
+            product: product
+        });
+    } catch (error) {
+        res.redirect(`/products`);
+    }
+}
+
+
