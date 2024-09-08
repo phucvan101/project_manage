@@ -6,13 +6,13 @@ module.exports.index = async (req, res) => {
         status: "active",
         deleted: false
     }).sort({ position: "desc" });
-    // console.log(products);
+    console.log(products);
 
     const newProducts = products.map(item => {
         item.priceNew = (item.price * (100 - item.discountPercentage) / 100).toFixed(0);
         return item;
     });
-    // console.log(newProducts); 1
+    // console.log(newProducts); 
 
 
     res.render("client/pages/products/index", {

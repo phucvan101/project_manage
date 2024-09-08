@@ -6,10 +6,11 @@ const flash = require('express-flash'); // hiện thị các thông báo tạm t
 const bodyParser = require('body-parser');
 const methodOverride = require('method-override'); // ghi đè phương thức khác lên html 
 const database = require('./config/database')
+
 const systemConfig = require('./config/system');
 const route = require("./routes/client/index.route");
 const routeAdmin = require("./routes/admin/index.route")
-database.connect();
+database.connectDB();
 const app = express();
 const port = process.env.PORT;
 
@@ -36,3 +37,4 @@ routeAdmin(app);
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`);
 })
+
