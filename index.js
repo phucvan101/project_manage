@@ -17,8 +17,8 @@ const port = process.env.PORT;
 
 app.use(methodOverride('_method'))
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(express.static("public"));
-app.set("views", "./views");
+app.use(express.static(`${__dirname}/public`));
+app.set("views", `${__dirname}/views`);
 app.set("view engine", "pug");
 // flash 
 app.use(cookieParser('keyboard cat'));
