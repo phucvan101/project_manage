@@ -4,6 +4,7 @@ include ../../mixin/search.pug
 include ../../mixin/pagination.pug
 include ../../mixin/form-change-multi.pug
 include ../../mixin/alert.pug
+include ../../mixin/sort.pug
 
 block main
     +alert-success(5000)
@@ -16,6 +17,13 @@ block main
                 +filter-status(filterStatus) 
             .col-6 
                 +search(keyword) 
+    
+    .card.mb-3 
+    .card-header Sort 
+        .card-body 
+            .row 
+                .col-4 
+                    +sort()
 
     .card-header Products List 
         .card-body 
@@ -27,6 +35,7 @@ block main
                         href=`${prefixAdmin}/products/create`
                         class="btn btn-outline-success"
                     ) + Add New
+
             table(
                 class="table table-hover table-sm"
                 checkbox-multi 
