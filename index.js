@@ -1,5 +1,6 @@
 require('dotenv').config();
 const express = require('express');
+const path = require('path');
 const cookieParser = require('cookie-parser')
 const session = require('express-session');
 const flash = require('express-flash'); // hiện thị các thông báo tạm thời cho người dùng
@@ -25,6 +26,10 @@ app.use(cookieParser('keyboard cat'));
 app.use(session({ cookie: { maxAge: 60000 } }));
 app.use(flash());
 // end flash
+
+// TinyMCE 
+app.use('/tinymce', express.static(path.join(__dirname, 'node_modules', 'tinymce')));
+// End TinyMCE
 
 // app local 
 app.locals.prefixAdmin = systemConfig.prefixAdmin;
