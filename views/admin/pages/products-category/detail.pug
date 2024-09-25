@@ -1,0 +1,33 @@
+extends ../../layouts/default.pug
+
+block main 
+    if (record.title) 
+        h1(class="mb-4") #{record.title}
+
+
+    if (record.thumbnail) 
+        div(class="mb-4")   
+            img(
+                src=record.thumbnail 
+                style="width: 100px"
+            )
+
+    if (record.status) 
+        div(class="mb-4") 
+            span Status: 
+            if (record.status == "active") 
+                span(class="badge text-bg-success") Active 
+            else 
+                span(class="badge text-bg-danger") Inactive
+    if (record.position) 
+        div(class="mb-4") Position: <b>#{record.position}</b>
+
+    if (record.description) 
+        div(class="mb-4") !{record.description}
+    
+    //- a(
+    //-     href=`${prefixAdmin}/products/edit/${product.id}`
+    //-     class="btn btn-warning btn-sm"
+    //- ) Edit
+
+    script(src="/admin/js/product.js") 

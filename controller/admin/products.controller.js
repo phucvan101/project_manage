@@ -189,6 +189,7 @@ module.exports.editPatch = async (req, res) => {
     req.body.price = parseInt(req.body.price)
     req.body.discountPercentage = parseInt(req.body.discountPercentage)
     req.body.stock = parseInt(req.body.stock)
+    req.body.position = parseInt(req.body.position)
 
     if (req.file) {
         req.body.thumbnail = `/uploads/${req.file.filename}`;
@@ -202,7 +203,7 @@ module.exports.editPatch = async (req, res) => {
     }
 
     res.redirect(`back`)
-    // console.log(req.body)
+    console.log(req.body)
 };
 
 //[GET] /admin/products/detail/:id

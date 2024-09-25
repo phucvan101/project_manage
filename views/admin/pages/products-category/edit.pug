@@ -3,10 +3,10 @@ include ../../mixin/alert.pug
 block main 
     +alert-error(5000)
     +alert-success(5000)
-    h1(class="mb-4") Edit Product 
+    h1(class="mb-4") Edit Product Category
     form(
-        action=`${prefixAdmin}/products/edit/${product.id}?_method=PATCH`
-        id="form-edit-product"
+        action=`${prefixAdmin}/products-category/edit/${record.id}?_method=PATCH`
+        id="form-edit-product-category"
         method="POST"
         enctype="multipart/form-data"
     )
@@ -17,7 +17,7 @@ block main
                 class="form-control"
                 id="title"
                 name="title"
-                value=product.title
+                value=record.title
             )
         div(class="form-group")
             label(for="desc") Description 
@@ -27,38 +27,8 @@ block main
                 id="desc"
                 name="description"
                 row="5"
-                value=product.description
-            ) #{product.description}
-        div(class="form-group")
-            label(for="price") Price 
-            input(
-                type="text"
-                class="form-control"
-                id="price"
-                name="price"
-                value=product.price
-                min="0"
-            )
-        div(class="form-group")
-            label(for="discount") Discount 
-            input(
-                type="text"
-                class="form-control"
-                id="discount"
-                name="discountPercentage"
-                value=product.discountPercentage
-                min="0"
-            )
-        div(class="form-group")
-            label(for="stock") Number
-            input(
-                type="number"
-                class="form-control"
-                id="stock"
-                name="stock"
-                value=product.stock
-                min="0"
-            )
+                value=record.description
+            ) #{record.description}
         div(
             class="form-group"
             upload-image
@@ -73,7 +43,7 @@ block main
                 upload-image-input
             )
             img(
-                src=product.thumbnail
+                src=record.thumbnail
                 upload-image-preview
                 class="image-preview"
             )
@@ -90,7 +60,7 @@ block main
                 id="position"
                 name="position"
                 placeholder="Auto increase"
-                value=product.position
+                value=record.position
                 min="1"
             )
         div(class="form-group form-check form-check-inline")
@@ -100,7 +70,7 @@ block main
                 id="statusActive"
                 name="status"
                 value="active"
-                checked=(product.status == "active" ? true : false)
+                checked=(record.status == "active" ? true : false)
             )
             label(for="statusActive" class="form-check-label") Active
         div(class="form-group form-check form-check-inline")
@@ -110,7 +80,7 @@ block main
                 id="statusInActive"
                 name="status"
                 value="inactive"
-                checked=(product.status == "inactive" ? true : false)
+                checked=(record.status == "inactive" ? true : false)
             )
             label(for="statusInActive" class="form-check-label") Inactive
         div(class="form-group")

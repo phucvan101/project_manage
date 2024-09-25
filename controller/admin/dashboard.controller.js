@@ -5,3 +5,4 @@ module.exports.dashboard = (req, res) => {
         pageTitle: "Dashboard",
     })
 }
+
