@@ -99,9 +99,14 @@ module.exports.edit = async (req, res) => {
             _id: req.params.id
         }
         const record = await ProductCategory.findOne(find);
+        const records = await ProductCategory.find({
+            deleted: false
+        });
+        const newRecords = createTreeHelper.tree(records);
         res.render('admin/pages/products-category/edit', {
             pageTitle: "Edit Product Category",
-            record: record
+            record: record,
+            records: newRecords
         })
     }
     catch (error) {
@@ -114,6 +119,7 @@ module.exports.edit = async (req, res) => {
 module.exports.editPatch = async (req, res) => {
     const id = req.params.id;
     req.body.position = parseInt(req.body.position);
+
     if (req.file) {
         req.body.thumbnail = `uploads/${req.file.filename}`
     }
@@ -124,7 +130,6 @@ module.exports.editPatch = async (req, res) => {
         req.flash('errors', 'Updated unsuccessful')
     }
     res.redirect('back')
-    console.log(req.body);
 
 }
 

@@ -1,5 +1,6 @@
 extends ../../layouts/default.pug
 include ../../mixin/alert.pug
+include ../../mixin/select-tree.pug
 block main 
     +alert-error(5000)
     +alert-success(5000)
@@ -19,6 +20,22 @@ block main
                 name="title"
                 value=record.title
             )
+        div(class="form-group")
+            label(for="parent_id") Category Parent 
+            //- input(
+            //-     type="text"
+            //-     class="form-control"
+            //-     id="parent_id"
+            //-     name="parent_id" 
+            //- )
+            select(
+                name="parent_id", 
+                id="parent_id",
+                class="form-control"
+            )
+                option(value="") --- Select Parent Category ---          
+                if (records) 
+                    +select-tree(records, 1, record.parent_id)
         div(class="form-group")
             label(for="desc") Description 
             textarea(
