@@ -215,7 +215,6 @@ module.exports.editPatch = async (req, res) => {
     }
 
     res.redirect(`back`)
-    console.log(req.body)
 };
 
 //[GET] /admin/products/detail/:id

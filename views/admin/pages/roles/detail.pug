@@ -1,0 +1,8 @@
+extend ../../layouts/default.pug 
+
+block main 
+    if (records.title) 
+        h1(class="mb-4") #{records.title} 
+    if (records.description) 
+        div(class="mb-4") #{records.description}
+    

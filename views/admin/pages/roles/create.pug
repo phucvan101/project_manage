@@ -1,0 +1,32 @@
+extend ../../layouts/default.pug 
+
+block main 
+    h1(class="mb-4") Add new permission
+    
+    form(
+        action=`${prefixAdmin}/roles/create`
+        method="POST"
+    )
+
+        div(class="from-group")
+            label(for="title") Title
+            input(
+                type="text"
+                class="form-control"
+                id="title"
+                name="title"
+                require 
+            )
+        div(class="from-group")
+            label(for="desc") Description
+            input(
+                type="text"
+                class="form-control"
+                id="desc"
+                name="description" 
+            )
+        div(class="from-group")
+            button(
+                type="Submit"
+                class="btn btn-primary"
+            ) Add New
