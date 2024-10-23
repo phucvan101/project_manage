@@ -10,4 +10,7 @@ router.get("/detail/:id", controller.detail);
 router.get("/edit/:id", controller.edit);
 router.patch("/edit/:id", controller.editPatch);
 router.delete("/delete/:id", controller.delete);
+
+router.get("/decentralization", controller.decentralization);
+router.patch("/decentralization", controller.decentralizationPatch);
 module.exports = router;

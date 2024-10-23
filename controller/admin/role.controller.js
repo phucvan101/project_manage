@@ -79,3 +79,29 @@ module.exports.delete = async (req, res) => {
     req.flash('success', `Updated Successfully`)
     res.redirect('back')
 }
+
+
+// [GET] /admin/roles/decentralization
+module.exports.decentralization = async (req, res) => {
+    let find = {
+        deleted: false
+    }
+    const records = await Role.find(find);
+    res.render("admin/pages/roles/decentralization", {
+        pageTitle: "Decentralization",
+        records: records
+    })
+}
+
+// [PATCH] /admin/roles/decentralization
+module.exports.decentralizationPatch = async (req, res) => {
+    // console.log(req.body);
+    const decentralization = JSON.parse(req.body.decentralization);
+    console.log(decentralization)
+    for (const item of decentralization) {
+        await Role.updateOne({ _id: item.id }, { decentralization: item.decentralization });
+    }
+    req.flash(`success`, "Updated successfully");
+
+    res.redirect("back");
+}
