@@ -82,13 +82,31 @@ module.exports.edit = async (req, res) => {
 // [PATCH] /admin/accounts/edit/id  
 module.exports.editPatch = async (req, res) => {
     const id = req.params.id;
-    try {
-        await Account.updateOne({ _id: id }, req.body);
-        req.flash('success', 'Account updated successfully')
-    } catch (err) {
-        req.flash('success', 'Account updated failed')
+
+    const emailExist = await Account.findOne({
+        _id: { $ne: id }, // find id different 
+        email: req.body.email,
+        deleted: false
+    });
+    if (emailExist) {
+        req.flash("error", "Email already exists");
+    } else {
+        if (req.body.password) {
+            req.body.password = md5(req.body.password);
+        } else {
+            req.body.password;
+        }
+        try {
+            await Account.updateOne({ _id: id }, req.body);
+            req.flash('success', 'Account updated successfully')
+        } catch (err) {
+            req.flash('success', 'Account updated failed')
+        }
     }
     res.redirect('back');
+
+
+    // console.log(req.body)
 }
 
 // [DELETE] /admin/accounts/delete/:id

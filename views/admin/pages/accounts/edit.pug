@@ -4,7 +4,7 @@ include ../../mixin/alert.pug
 block main
     h1(class="mb-4") Edit account
     +alert-error(500)
-
+    +alert-success(5000)
     form(
         action=`${prefixAdmin}/accounts/edit/${record.id}?_method=PATCH`,
         method="POST"
