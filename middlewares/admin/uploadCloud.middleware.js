@@ -25,10 +25,13 @@ module.exports.upload = (req, res, next) => {
             });
         };
         async function upload(req) {
-            let result = await streamUpload(req);
-            // console.log(result.secure_url);
-            req.body[req.file.fieldname] = result.secure_url;
-            next();
+            try {
+                let result = await streamUpload(req);
+                req.body[req.file.fieldname] = result.secure_url;
+                next();
+            } catch (error) {
+                res.status(500).json({ error: 'Cloudinary upload failed', details: error.message });
+            }
         }
 
         upload(req);

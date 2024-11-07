@@ -1,0 +1,27 @@
+extend ../../layouts/default.pug 
+
+block main 
+
+    if (record.fullName) 
+        h1(class="mb-4") #{record.fullName}
+
+    if (record.email) 
+        div(class="mb-4") email: <b>#{record.email}</b>
+    
+    if (record.password) 
+        div(class="mb-4") password: <b>#{record.password}</b>
+
+    if (record.avatar) 
+        div(class="mb-4") 
+            img(
+                src=record.avatar 
+                style="width: 100px"
+            )
+    if (record.status) 
+        div(class="mb-4") 
+            span Status: 
+            if (record.status == "active") 
+                span(class="badge text-bg-success") Active 
+            else 
+                span(class="badge text-bg-danger") Inactive
+    script(src="/admin/js/product.js")
