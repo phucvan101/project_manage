@@ -1,4 +1,5 @@
 const md5 = require('md5'); // thư viện mã hóa
+const crypto = require('crypto');
 const Account = require('../../models/account.model')
 const Role = require('../../models/role.model')
 const systemConfig = require("../../config/system");
@@ -71,11 +72,13 @@ module.exports.edit = async (req, res) => {
     }
     const roles = await Role.find();
     const record = await Account.findOne(find);
+
     res.render("admin/pages/accounts/edit", {
         pageTitle: "Edit Account",
         record: record,
-        roles: roles
+        roles: roles,
     })
+    console.log(record.status)
 }
 
 
