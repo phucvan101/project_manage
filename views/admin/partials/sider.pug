@@ -3,14 +3,18 @@
         ul 
             li  
                 a(href=`${prefixAdmin}/dashboard`) Dashboard 
-            li 
-                a(href="/admin/products-category") Products Category
-            li 
-                a(href="/admin/products") Products 
-
-            li  
-                a(href=`${prefixAdmin}/roles`) Permissions
-            li  
-                a(href=`${prefixAdmin}/roles/decentralization`) Decentralization  
-            li  
-                a(href=`${prefixAdmin}/accounts`) Accounts 
+            if (role.decentralization.includes ("product-category_view"))
+                li 
+                    a(href="/admin/products-category") Products Category
+            if (role.decentralization.includes ("product_view"))
+                li 
+                    a(href="/admin/products") Products 
+            if (role.decentralization.includes ("roles_view"))
+                li  
+                    a(href=`${prefixAdmin}/roles`) Permissions
+            if (role.decentralization.includes ("decentralization_view"))
+                li  
+                    a(href=`${prefixAdmin}/roles/decentralization`) Decentralization
+            if (role.decentralization.includes ("accounts_view"))  
+                li  
+                    a(href=`${prefixAdmin}/accounts`) Accounts 
