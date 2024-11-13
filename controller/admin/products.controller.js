@@ -107,7 +107,14 @@ module.exports.changMulti = async (req, res) => {
             req.flash("success", `Update Status Of ${ids.length} Products Successfully!!!`)
             break;
         case "delete-all":
-            await Product.updateMany({ _id: { $in: ids } }, { deleted: true, deletedAt: new Date() })
+            await Product.updateMany({ _id: { $in: ids } }, {
+                deleted: true,
+                // deletedAt: new Date()
+                deletedBy: {
+                    account_id: res.locals.user.id,
+                    deletedAt: new Date(),
+                }
+            })
             req.flash("success", `Delete ${ids.length} Products Successfully!!!`)
             break;
         case "change-position":
@@ -133,7 +140,11 @@ module.exports.deleteItem = async (req, res) => {
     // await Product.deleteOne({ _id: id });
     await Product.updateOne({ _id: id }, {
         deleted: true,
-        deletedAt: new Date()
+        // deletedAt: new Date()
+        deletedBy: {
+            account_id: res.locals.user.id,
+            deletedAt: new Date(),
+        }
     });
     req.flash("success", `Delete Products Successfully!!!`)
     res.redirect("back");
@@ -228,8 +239,8 @@ module.exports.editPatch = async (req, res) => {
     }
 
     res.redirect(`back`)
-    console.log(req.file)
-    console.log(req.body)
+    // console.log(req.file)
+    // console.log(req.body)
 };
 
 //[GET] /admin/products/detail/:id
@@ -248,7 +259,7 @@ module.exports.detail = async (req, res) => {
             pageTitle: product.title,
             product: product
         });
-        console.log(product)
+        // console.log(product)
     } catch (error) {
         res.redirect(`${systemConfig.prefixAdmin}/products`);
     }
