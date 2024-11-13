@@ -1,5 +1,6 @@
 const ProductCategory = require('../../models/product-catagory.model')
 const Product = require("../../models/product.model")
+const Account = require("../../models/account.model")
 const systemConfig = require("../../config/system")
 const filterStatusHelper = require("../../helpers/filterStatus")
 const searchHelper = require("../../helpers/search")
@@ -54,8 +55,19 @@ module.exports.index = async (req, res) => {
         sort.position = "desc";
     }
     // End Sort
+
     const products = await Product.find(find).sort(sort).limit(objectPagination.limitItems).skip(objectPagination.skip);
     // console.log(products);
+
+    for (const product of products) {
+        const user = await Account.findOne({
+            _id: product.createdBy.account_id
+        })
+        if (user) {
+            product.accountFullName = user.fullName;
+        }
+    }
+
     res.render("admin/pages/products/index", {
         pageTitle: "Products List",
         products: products,
@@ -130,6 +142,7 @@ module.exports.deleteItem = async (req, res) => {
 
 //[GET] /admin/products/create
 module.exports.create = async (req, res) => {
+
     let find = {
         deleted: false,
     }
@@ -160,13 +173,13 @@ module.exports.createPost = async (req, res) => {
     // if (req.file) {
     //     req.body.thumbnail = `/uploads/${req.file.filename}`;
     // }
+    req.body.createdBy = {
+        account_id: res.locals.user.id,
+    };
     const product = new Product(req.body);
     await product.save();
 
     res.redirect(`${systemConfig.prefixAdmin}/products`)
-    // console.log(req.body)
-    console.log(req.file)
-    // res.send("ok")
 };
 
 //[GET] /admin/products/edit/:id

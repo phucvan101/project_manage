@@ -5,6 +5,7 @@ include ../../mixin/pagination.pug
 include ../../mixin/form-change-multi.pug
 include ../../mixin/alert.pug
 include ../../mixin/sort.pug
+include ../../mixin/moment.pug
 
 block main
     if (role.decentralization.includes ("product_view"))
@@ -52,6 +53,7 @@ block main
                             th Price
                             th Position
                             th Status
+                            th Creator
                             th Action
                     
                     tbody 
@@ -112,6 +114,10 @@ block main
                                                 data-id=item.id  
                                                 class="badge text-bg-danger"
                                             ) Inactive
+                                td
+                                    p #{item.accountFullName}
+                                    p 
+                                        +formatDateTime(item.createdBy.createdAt)
                                          
                                 td  
                                     a(

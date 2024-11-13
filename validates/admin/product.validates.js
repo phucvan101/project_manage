@@ -4,5 +4,15 @@ module.exports.createPost = (req, res, next) => {
         res.redirect("back");
         return; // ngăn chặn chạy đoạn code dưới
     }
+    if (!req.body.product_category_id) {
+        req.flash("error", "Please select a product category");
+        res.redirect("back");
+        return; // ngăn chặn chạy đoạn code dưới
+    }
+    if (!req.body.price) {
+        req.flash("error", "Please enter a price");
+        res.redirect("back");
+        return; // ngăn chặn chạy đoạn code dưới
+    }
     next(); // middleware 
 }

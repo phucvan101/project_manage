@@ -6,6 +6,7 @@ const session = require('express-session');
 const flash = require('express-flash'); // hiện thị các thông báo tạm thời cho người dùng
 const bodyParser = require('body-parser');
 const methodOverride = require('method-override'); // ghi đè phương thức khác lên html 
+const moment = require("moment")
 const database = require('./config/database')
 
 const systemConfig = require('./config/system');
@@ -33,7 +34,7 @@ app.use('/tinymce', express.static(path.join(__dirname, 'node_modules', 'tinymce
 
 // app local 
 app.locals.prefixAdmin = systemConfig.prefixAdmin;
-
+app.locals.moment = moment;
 //route
 route(app);
 routeAdmin(app);
