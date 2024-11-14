@@ -1,4 +1,5 @@
 const Role = require('../../models/role.model')
+const Account = require('../../models/account.model')
 const systemConfig = require("../../config/system");
 
 // [GET] /admin/roles  
@@ -7,6 +8,14 @@ module.exports.index = async (req, res) => {
         deleted: false,
     };
     const records = await Role.find(find)
+    for (const record of records) {
+        const user = await Account.findOne({
+            _id: record.createdBy.account_id,
+        })
+        if (user) {
+            record.accountFullName = user.fullName
+        }
+    }
     res.render("admin/pages/roles/index", {
         pageTitle: "Permissions",
         records: records
@@ -23,6 +32,9 @@ module.exports.create = async (req, res) => {
 // [POST] /admin/roles/create
 module.exports.createPost = async (req, res) => {
     // console.log(req.body);
+    req.body.createdBy = {
+        account_id: res.locals.user.id,
+    };
     const record = new Role(req.body);
     await record.save();
     res.redirect(`${systemConfig.prefixAdmin}/roles`);
@@ -74,7 +86,10 @@ module.exports.delete = async (req, res) => {
     const id = req.params.id;
     await Role.updateOne({ _id: id }, {
         deleted: true,
-        deletedAt: new Date(),
+        deletedBy: {
+            account_id: res.locals.user.id,
+            deletedAt: new Date(),
+        },
     })
     req.flash('success', `Updated Successfully`)
     res.redirect('back')

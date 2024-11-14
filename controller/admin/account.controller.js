@@ -17,6 +17,12 @@ module.exports.index = async (req, res) => {
             deleted: false,
         })
         record.role = role;
+        const user = await Account.findOne({
+            _id: record.createdBy.account_id
+        })
+        if (user) {
+            record.accountFullName = user.fullName;
+        }
     }
     res.render("admin/pages/accounts/index", {
         pageTitle: "Accounts",
@@ -39,6 +45,9 @@ module.exports.createPost = async (req, res) => {
         email: req.body.email,
         deleted: false
     });
+    req.body.createdBy = {
+        account_id: res.locals.user.id,
+    };
     if (emailExist) {
         req.flash("error", "Email already exists");
         res.redirect("back")
@@ -118,7 +127,10 @@ module.exports.deleteAccount = async (req, res) => {
     try {
         await Account.updateOne({ _id: id }, {
             deleted: true,
-            deletedAt: new Date(),
+            deletedBy: {
+                account_id: res.locals.user.id,
+                deletedAt: new Date(),
+            },
         })
         req.flash('success', 'Account deleted successfully')
     } catch (err) {

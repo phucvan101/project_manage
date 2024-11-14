@@ -1,5 +1,5 @@
 const ProductCategory = require('../../models/product-catagory.model')
-
+const Account = require('../../models/account.model')
 const systemConfig = require("../../config/system")
 const searchHelper = require("../../helpers/search")
 const paginationHelper = require("../../helpers/pagination")
@@ -30,14 +30,16 @@ module.exports.index = async (req, res) => {
     )
     // End Pagination
 
-
+    const accounts = await Account.find(find)
     const records = await ProductCategory.find(find);
     const newRecords = createTreeHelper.tree(records);
+
     res.render("admin/pages/products-category/index", {
         pageTitle: "Products Category",
         records: newRecords,
         keyword: objectSearch.keyword,
         pagination: objectPagination,
+        accounts: accounts
     });
 }
 
@@ -65,7 +67,9 @@ module.exports.createPost = async (req, res) => {
     else {
         req.body.position = parseInt(req.body.position)
     }
-
+    req.body.createdBy = {
+        account_id: res.locals.user.id,
+    }
     const record = new ProductCategory(req.body);
     await record.save();
 
@@ -138,7 +142,10 @@ module.exports.deleteItem = async (req, res) => {
     const id = req.params.id
     await ProductCategory.updateOne({ _id: id }, {
         deleted: true,
-        deletedAt: new Date(),
+        deletedBy: {
+            account_id: res.locals.user.id,
+            deletedAt: new Date(),
+        }
     })
     req.flash('success', `Updated successfully`)
     res.redirect('back');

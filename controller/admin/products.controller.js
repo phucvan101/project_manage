@@ -84,8 +84,14 @@ module.exports.changeStatus = async (req, res) => {
     // console.log(req.params);
     const status = req.params.status;
     const id = req.params.id;
-
-    await Product.updateOne({ _id: id }, { status: status });
+    const updatedBy = {
+        account_id: res.locals.user.id,
+        updatedAt: new Date()
+    }
+    await Product.updateOne({ _id: id }, {
+        status: status,
+        $push: { updatedBy: updatedBy }
+    });
     req.flash("success", "Updated Status successfully")
     res.redirect('back');
 }
@@ -97,13 +103,17 @@ module.exports.changMulti = async (req, res) => {
     const ids = req.body.ids.split(", ");
     // console.log(type);
     // console.log(ids);
+    const updatedBy = {
+        account_id: res.locals.user.id,
+        updatedAt: new Date()
+    }
     switch (type) {
         case "active":
-            await Product.updateMany({ _id: { $in: ids } }, { status: "active" })
+            await Product.updateMany({ _id: { $in: ids } }, { status: "active", $push: { updatedBy: updatedBy } })
             req.flash("success", `Update Status Of ${ids.length} Products Successfully!!!`)
             break;
         case "inactive":
-            await Product.updateMany({ _id: { $in: ids } }, { status: "inactive" })
+            await Product.updateMany({ _id: { $in: ids } }, { status: "inactive", $push: { updatedBy: updatedBy } })
             req.flash("success", `Update Status Of ${ids.length} Products Successfully!!!`)
             break;
         case "delete-all":
@@ -123,7 +133,8 @@ module.exports.changMulti = async (req, res) => {
                 let [id, position] = item.split("-");
                 position = parseInt(position);
                 await Product.updateOne({ _id: id }, {
-                    position: position
+                    position: position,
+                    $push: { updatedBy: updatedBy }
                 })
             }
             break;
@@ -232,7 +243,15 @@ module.exports.editPatch = async (req, res) => {
     // }
 
     try {
-        await Product.updateOne({ _id: id }, req.body);
+        const updatedBy = {
+            account_id: res.locals.user.id,
+            updatedAt: new Date()
+        }
+
+        await Product.updateOne({ _id: id }, {
+            ...req.body,
+            $push: { updatedBy: updatedBy }
+        });
         req.flash('success', `Updated successfully`)
     } catch (err) {
         req.flash('success', `Updated unsuccessfully`)

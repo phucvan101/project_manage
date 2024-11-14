@@ -1,4 +1,6 @@
-mixin table-tree(items, level = 1)
+include moment.pug
+
+mixin table-tree(items, accounts, level = 1)
     each item, index in items   
         -const prefix = Array(level + 1).join("-- ")
         tr
@@ -58,7 +60,13 @@ mixin table-tree(items, level = 1)
                             data-id=item.id
                             class="badge text-bg-danger"
                         ) Inactive 
+            td 
+                each acc in accounts 
+                    if (acc._id == item.createdBy.account_id)
+                        p #{acc.fullName}
 
+                p 
+                    +formatDateTime(item.createdBy.createdAt)
 
             td  
                 a(
@@ -77,4 +85,4 @@ mixin table-tree(items, level = 1)
                         data-id = item.id
                     ) Delete
         if item.children && item.children.length > 0
-            +table-tree(item.children, level + 1)
+            +table-tree(item.children, accounts, level + 1)
