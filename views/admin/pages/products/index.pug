@@ -54,6 +54,7 @@ block main
                             th Position
                             th Status
                             th Creator
+                            th Editor 
                             th Action
                     
                     tbody 
@@ -118,7 +119,14 @@ block main
                                     p #{item.accountFullName}
                                     p 
                                         +formatDateTime(item.createdBy.createdAt)
-                                         
+                                td
+                                    - const updatedBy = item.updatedBy.slice(-1)[0];
+                                    if(updatedBy)
+                                        p #{item.accountFullNameEdit}
+                                        p   
+                                            +formatDateTime(updatedBy.updatedAt)
+                                        //- p #{item.updatedBy}
+
                                 td  
                                     a(
                                         href=`${prefixAdmin}/products/detail/${item.id}`

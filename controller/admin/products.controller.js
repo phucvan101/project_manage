@@ -60,13 +60,25 @@ module.exports.index = async (req, res) => {
     // console.log(products);
 
     for (const product of products) {
+        // info creator 
         const user = await Account.findOne({
             _id: product.createdBy.account_id
         })
         if (user) {
             product.accountFullName = user.fullName;
         }
+        // info editor nearly 
+
+        const updatedBy = product.updatedBy.slice(-1)[0];
+        if (updatedBy) {
+            const userUpdated = await Account.findOne({
+                _id: updatedBy.account_id
+            });
+            product.accountFullNameEdit = userUpdated.fullName;
+            // console.log(updatedBy.updatedAt);
+        }
     }
+
 
     res.render("admin/pages/products/index", {
         pageTitle: "Products List",
