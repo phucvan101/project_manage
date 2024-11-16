@@ -12,17 +12,29 @@ module.exports.index = async (req, res) => {
     };
     const records = await Account.find(find).select("-password -token")
     for (const record of records) {
+        // info permission 
         const role = await Role.findOne({
             _id: record.role_id,
             deleted: false,
         })
         record.role = role;
+        // info creator
         const user = await Account.findOne({
             _id: record.createdBy.account_id
         })
         if (user) {
             record.accountFullName = user.fullName;
         }
+        // info editor
+        const updatedBy = record.updatedBy.slice(-1)[0];
+        if (updatedBy) {
+            const userUpdate = await Account.findOne({
+                _id: updatedBy.account_id
+            })
+            record.accountFullNameEdit = userUpdate.fullName
+        }
+
+        // console.log(updatedBy)
     }
     res.render("admin/pages/accounts/index", {
         pageTitle: "Accounts",
@@ -87,7 +99,7 @@ module.exports.edit = async (req, res) => {
         record: record,
         roles: roles,
     })
-    console.log(record.status)
+    // console.log(record)
 }
 
 
@@ -109,7 +121,14 @@ module.exports.editPatch = async (req, res) => {
             req.body.password;
         }
         try {
-            await Account.updateOne({ _id: id }, req.body);
+            const updatedBy = {
+                account_id: res.locals.user.id,
+                updatedAt: new Date(),
+            }
+            await Account.updateOne({ _id: id }, {
+                ...req.body,
+                $push: { updatedBy: updatedBy }
+            });
             req.flash('success', 'Account updated successfully')
         } catch (err) {
             req.flash('success', 'Account updated failed')
