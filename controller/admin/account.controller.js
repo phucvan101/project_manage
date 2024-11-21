@@ -99,7 +99,7 @@ module.exports.edit = async (req, res) => {
         record: record,
         roles: roles,
     })
-    // console.log(record)
+    console.log(record)
 }
 
 
@@ -118,7 +118,7 @@ module.exports.editPatch = async (req, res) => {
         if (req.body.password) {
             req.body.password = md5(req.body.password);
         } else {
-            req.body.password;
+            delete req.body.password;
         }
         try {
             const updatedBy = {

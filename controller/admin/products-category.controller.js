@@ -127,8 +127,15 @@ module.exports.editPatch = async (req, res) => {
     if (req.file) {
         req.body.thumbnail = `uploads/${req.file.filename}`
     }
+    const updatedBy = {
+        account_id: res.locals.user.id,
+        updatedAt: new Date(),
+    }
     try {
-        await ProductCategory.updateOne({ _id: id }, req.body);
+        await ProductCategory.updateOne({ _id: id }, {
+            ...req.body,
+            $push: { updatedBy: updatedBy }
+        });
         req.flash('success', `Updated successfully`)
     } catch (err) {
         req.flash('errors', 'Updated unsuccessful')
@@ -155,7 +162,14 @@ module.exports.deleteItem = async (req, res) => {
 module.exports.changeStatus = async (req, res) => {
     const status = req.params.status;
     const id = req.params.id;
-    await ProductCategory.updateOne({ _id: id }, { status: status });
+    const updatedBy = {
+        account_id: res.locals.user.id,
+        updatedAt: new Date()
+    }
+    await ProductCategory.updateOne({ _id: id }, {
+        status: status,
+        $push: { updatedBy: updatedBy }
+    });
     req.flash('success', `Updated successfully`)
     res.redirect('back');
 }

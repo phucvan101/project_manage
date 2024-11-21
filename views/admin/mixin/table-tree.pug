@@ -67,7 +67,14 @@ mixin table-tree(items, accounts, level = 1)
 
                 p 
                     +formatDateTime(item.createdBy.createdAt)
-
+            td 
+                -const updatedBy = item.updatedBy.slice(-1)[0]
+                if (updatedBy)
+                    each acc in accounts 
+                        if (acc._id == updatedBy.account_id)
+                            p #{acc.fullName}
+                    p 
+                        +formatDateTime(updatedBy.updatedAt)
             td  
                 a(
                     href=`${prefixAdmin}/products-category/detail/${item.id}`
