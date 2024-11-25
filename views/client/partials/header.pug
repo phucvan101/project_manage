@@ -1,3 +1,5 @@
+include ../mixins/sub-menu.pug
+
 header 
     .header 
         .container
@@ -11,5 +13,8 @@ header
                         ul 
                             li 
                                 a(href='/') Home page 
-                            li  
+                            li(class="sub-menu")
+                                -const pathProduct = "/products";
                                 a(href='/products') Products List 
+                                    +sub-menu(layoutProductsCategory, pathProduct)  
+                                
