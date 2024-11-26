@@ -53,21 +53,26 @@ module.exports.create = async (req, res) => {
 
 // [POST] /admin/accounts/createPost 
 module.exports.createPost = async (req, res) => {
-    const emailExist = await Account.findOne({
-        email: req.body.email,
-        deleted: false
-    });
-    req.body.createdBy = {
-        account_id: res.locals.user.id,
-    };
-    if (emailExist) {
-        req.flash("error", "Email already exists");
-        res.redirect("back")
+    const decentralization = res.locals.role.decentralization;
+    if (decentralization.includes("accounts_create")) {
+        const emailExist = await Account.findOne({
+            email: req.body.email,
+            deleted: false
+        });
+        req.body.createdBy = {
+            account_id: res.locals.user.id,
+        };
+        if (emailExist) {
+            req.flash("error", "Email already exists");
+            res.redirect("back")
+        } else {
+            req.body.password = md5(req.body.password);
+            const record = new Account(req.body);
+            await record.save();
+            res.redirect(`${systemConfig.prefixAdmin}/accounts`);
+        }
     } else {
-        req.body.password = md5(req.body.password);
-        const record = new Account(req.body);
-        await record.save();
-        res.redirect(`${systemConfig.prefixAdmin}/accounts`);
+        return;
     }
 
 }
@@ -105,36 +110,42 @@ module.exports.edit = async (req, res) => {
 
 // [PATCH] /admin/accounts/edit/id  
 module.exports.editPatch = async (req, res) => {
-    const id = req.params.id;
+    const decentralization = res.locals.role.decentralization;
+    if (decentralization.includes("accounts_edit")) {
 
-    const emailExist = await Account.findOne({
-        _id: { $ne: id }, // find id different 
-        email: req.body.email,
-        deleted: false
-    });
-    if (emailExist) {
-        req.flash("error", "Email already exists");
-    } else {
-        if (req.body.password) {
-            req.body.password = md5(req.body.password);
+        const id = req.params.id;
+
+        const emailExist = await Account.findOne({
+            _id: { $ne: id }, // find id different 
+            email: req.body.email,
+            deleted: false
+        });
+        if (emailExist) {
+            req.flash("error", "Email already exists");
         } else {
-            delete req.body.password;
-        }
-        try {
-            const updatedBy = {
-                account_id: res.locals.user.id,
-                updatedAt: new Date(),
+            if (req.body.password) {
+                req.body.password = md5(req.body.password);
+            } else {
+                delete req.body.password;
             }
-            await Account.updateOne({ _id: id }, {
-                ...req.body,
-                $push: { updatedBy: updatedBy }
-            });
-            req.flash('success', 'Account updated successfully')
-        } catch (err) {
-            req.flash('success', 'Account updated failed')
+            try {
+                const updatedBy = {
+                    account_id: res.locals.user.id,
+                    updatedAt: new Date(),
+                }
+                await Account.updateOne({ _id: id }, {
+                    ...req.body,
+                    $push: { updatedBy: updatedBy }
+                });
+                req.flash('success', 'Account updated successfully')
+            } catch (err) {
+                req.flash('success', 'Account updated failed')
+            }
         }
+        res.redirect('back');
+    } else {
+        return;
     }
-    res.redirect('back');
 
 
     // console.log(req.body)
@@ -142,18 +153,24 @@ module.exports.editPatch = async (req, res) => {
 
 // [DELETE] /admin/accounts/delete/:id
 module.exports.deleteAccount = async (req, res) => {
-    const id = req.params.id;
-    try {
-        await Account.updateOne({ _id: id }, {
-            deleted: true,
-            deletedBy: {
-                account_id: res.locals.user.id,
-                deletedAt: new Date(),
-            },
-        })
-        req.flash('success', 'Account deleted successfully')
-    } catch (err) {
-        req.flash('success', 'Account deleted unexpectedly')
+    const decentralization = res.locals.role.decentralization;
+    if (decentralization.includes("accounts_delete")) {
+
+        const id = req.params.id;
+        try {
+            await Account.updateOne({ _id: id }, {
+                deleted: true,
+                deletedBy: {
+                    account_id: res.locals.user.id,
+                    deletedAt: new Date(),
+                },
+            })
+            req.flash('success', 'Account deleted successfully')
+        } catch (err) {
+            req.flash('success', 'Account deleted unexpectedly')
+        }
+        res.redirect('back')
+    } else {
+        return;
     }
-    res.redirect('back')
 }

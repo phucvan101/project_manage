@@ -32,12 +32,17 @@ module.exports.create = async (req, res) => {
 // [POST] /admin/roles/create
 module.exports.createPost = async (req, res) => {
     // console.log(req.body);
-    req.body.createdBy = {
-        account_id: res.locals.user.id,
-    };
-    const record = new Role(req.body);
-    await record.save();
-    res.redirect(`${systemConfig.prefixAdmin}/roles`);
+    const decentralization = res.locals.role.decentralization;
+    if (decentralization.includes("roles_create")) {
+        req.body.createdBy = {
+            account_id: res.locals.user.id,
+        };
+        const record = new Role(req.body);
+        await record.save();
+        res.redirect(`${systemConfig.prefixAdmin}/roles`);
+    } else {
+        return;
+    }
 }
 
 
@@ -56,43 +61,58 @@ module.exports.detail = async (req, res) => {
 
 // [GET] /admin/roles/edit/:id 
 module.exports.edit = async (req, res) => {
-    const find = {
-        deleted: false,
-        _id: req.params.id
+    const decentralization = res.locals.role.decentralization;
+    if (decentralization.includes("roles_edit")) {
+        const find = {
+            deleted: false,
+            _id: req.params.id
+        }
+        const records = await Role.findOne(find);
+        res.render("admin/pages/roles/edit", {
+            pageTitle: records.title,
+            records: records
+        })
+    } else {
+        return;
     }
-    const records = await Role.findOne(find);
-    res.render("admin/pages/roles/edit", {
-        pageTitle: records.title,
-        records: records
-    })
 }
 
 // [PATCH] /admin/roles/edit/:id
 module.exports.editPatch = async (req, res) => {
-    const id = req.params.id;
-    try {
-        await Role.updateOne({ _id: id }, req.body);
-        req.flash('success', `Updated successfully`)
+    const decentralization = res.locals.role.decentralization;
+    if (decentralization.includes("roles_edit")) {
+        const id = req.params.id;
+        try {
+            await Role.updateOne({ _id: id }, req.body);
+            req.flash('success', `Updated successfully`)
+        }
+        catch (err) {
+            req.flash('success', 'Updated unsuccessful');
+        }
+        res.redirect('back');
+    } else {
+        return;
     }
-    catch (err) {
-        req.flash('success', 'Updated unsuccessful');
-    }
-    res.redirect('back');
 }
 
 
 // [DELETE] /admin/roles/delete/:id 
 module.exports.delete = async (req, res) => {
-    const id = req.params.id;
-    await Role.updateOne({ _id: id }, {
-        deleted: true,
-        deletedBy: {
-            account_id: res.locals.user.id,
-            deletedAt: new Date(),
-        },
-    })
-    req.flash('success', `Updated Successfully`)
-    res.redirect('back')
+    const decentralization = res.locals.role.decentralization;
+    if (decentralization.includes("roles_delete")) {
+        const id = req.params.id;
+        await Role.updateOne({ _id: id }, {
+            deleted: true,
+            deletedBy: {
+                account_id: res.locals.user.id,
+                deletedAt: new Date(),
+            },
+        })
+        req.flash('success', `Updated Successfully`)
+        res.redirect('back')
+    } else {
+        return;
+    }
 }
 
 
