@@ -5,6 +5,12 @@
     padding: 10px 0;
 }
 
+.header a {
+    text-decoration: none;
+    font-weight: bold;
+    color: orangered
+}
+
 .header .inner-logo img {
     max-height: 50px;
     max-width: 100%;
@@ -77,3 +83,85 @@
 }
 
 /* End sub menu */
+
+/* product - item */
+.inner-title {
+    font-weight: 600;
+    color: green;
+}
+
+.product-item {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.product-item a {
+    text-decoration: none;
+}
+
+.product-item .inner-image {
+    width: 100%;
+    aspect-ratio: 4/3;
+    border-bottom: 1px solid #ddd;
+    position: relative;
+}
+
+.product-item .inner-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.product-item .inner-featured {
+    position: absolute;
+    /* Định vị tuyệt đối so với cha của nó */
+    top: 10px;
+    /* Cách mép trên 10px */
+    right: 10px;
+    /* Cách mép phải 10px */
+    background-color: green;
+    /* Màu nền xanh lá cây */
+    color: white;
+    /* Màu chữ trắng */
+    padding: 5px 10px;
+    /* Khoảng cách bên trong (trên/dưới 5px, trái/phải 10px) */
+    font-size: 12px;
+    /* Kích thước chữ 12px */
+    font-weight: bold;
+    /* Chữ đậm */
+    border-radius: 5px;
+    /* Bo góc 5px */
+    z-index: 10;
+    /* Đảm bảo phần tử nằm trên các phần tử khác */
+    text-transform: uppercase;
+    /* Viết hoa toàn bộ chữ */
+}
+
+/* Đảm bảo cha của nó có position relative để định vị chính xác */
+.product-item {
+    position: relative;
+}
+
+
+.product-item .inner-content {
+    padding: 15px;
+}
+
+.product-item .inner-content .inner-title {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.product-item .inner-content .inner-price-new {
+    font-size: 18px;
+    font-weight: 600;
+    color: rgb(0, 128, 30);
+}
+
+.product-item .inner-content .inner-price-old {
+    font-size: 14px;
+    /* font-weight: bold; */
+    color: red;
+    text-decoration: line-through;
+}
