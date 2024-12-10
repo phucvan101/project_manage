@@ -1,27 +1,53 @@
 extends ../../layout/default.pug
+include ../../mixins/box-head.pug
 
 block main 
-    .container.my-3
+    .container.my-5
         .row 
-            .col-12 
+            .col-6 
+                .inner-thumb 
+                    img(src=product.thumbnail, alt = product.title)
+            .col-6 
                 if (product.title) 
-                    h1(class="mb-4") #{product.title}
+                    h1(class="inner-title") #{product.title}
+
+                if (product.category) 
+                    div(class="inner-category")
+                        span Category: 
+                        a(href=`/products/${product.category.slug}`) #{product.category.title}
+                if (product.priceNew) 
+                    h1(class="inner-price-new") Price New: <b> #{product.priceNew} </b>
 
                 if (product.price) 
-                    h1(class="mb-4") Price: <b> #{product.price} </b>
+                    h1(class="inner-price-old") Price Old: <b> #{product.price} </b>
 
                 if (product.discountPercentage) 
-                    h1(class="mb-4") DiscountPercentage: <b> #{product.discountPercentage} </b>
+                    h1(class="inner-percent") DiscountPercentage: <span> #{product.discountPercentage}%</span>
 
                 if (product.stock) 
-                    h1(class="mb-4") Stock: <b> #{product.stock} </b>
+                    h1(class="inner-stock") Stock: <b> #{product.stock} </b>
 
-                if (product.thumbnail) 
-                    div(class="mb-4") 
-                        img(src=product.thumbnail, style="width: 100px")
+                form(
+                    action=`/cart/add/${product.id}`
+                    method="POST"
+                )   
+                    input(
+                        class="form-control mb-2"
+                        type="number"
+                        name="quantity"
+                        value="1"
+                        min="1"
+                        max=product.stock 
+                    )
+                    button(
+                        type="submit"
+                        class="btn btn-success btn-block"
+                    ) Add to cart
+
+        hr 
+        .container.my-5 
+            .row 
+                .col-12 
+                    +box-head("Description")
+                    .inner-desc !{product.description}
                 
-                if (product.position)
-                    div(class="mb-4") Position: <b> #{product.position}</b>
-
-                if (product.description) 
-                    div(class="mb-4") #{product.description}
