@@ -34,4 +34,7 @@ header
                                 -const pathProduct = "/products";
                                 a(href='/products') Products List 
                                     +sub-menu(layoutProductsCategory, pathProduct)  
+                            li 
+                                a(hre="/cart") Cart (#{miniCart ? miniCart.totalQuantity : 0})
+                                
                                 
