@@ -38,9 +38,10 @@ header
                                 a(href="/cart" class="cart-link")
                                     | Cart(#{miniCart ? miniCart.totalQuantity : 0})
                             li 
+                                a(href="/user/login") Login
+                            li 
                                 a(href="/user/register") Sign up 
-                                //- a(href="/user/login") Login
-
+                            li #{user}
                                 
                                 
                             
