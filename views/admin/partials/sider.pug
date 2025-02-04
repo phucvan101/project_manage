@@ -17,4 +17,8 @@
                     a(href=`${prefixAdmin}/roles/decentralization`) Decentralization
             if (role.decentralization.includes ("accounts_view"))  
                 li  
-                    a(href=`${prefixAdmin}/accounts`) Accounts 
+                    a(href=`${prefixAdmin}/accounts`) Accounts
+
+            if (role.decentralization.includes ("account-clients_view"))  
+                li  
+                    a(href=`${prefixAdmin}/account-clients`) Accounts Client

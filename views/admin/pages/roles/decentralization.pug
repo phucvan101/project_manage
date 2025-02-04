@@ -131,6 +131,31 @@ block main
                             td(class="text-center")
                                 input(type="checkbox")
                     
+                    //- Danh sach client
+                    tr  
+                        td(colspan="4")
+                            b Account Clients
+                    tr(data-name="account-clients_view")
+                        td View 
+                        each item in records
+                            td(class="text-center")
+                                input(type="checkbox")
+                    tr(data-name="account-clients_create")
+                        td Add new 
+                        each item in records
+                            td(class="text-center")
+                                input(type="checkbox")
+                    tr(data-name="account-clients_edit")
+                        td Edit 
+                        each item in records
+                            td(class="text-center")
+                                input(type="checkbox")
+                    tr(data-name="account-clients_delete")
+                        td Delete  
+                        each item in records
+                            td(class="text-center")
+                                input(type="checkbox")
+
                     //- phan quyen 
                     tr  
                         td(colspan="4")

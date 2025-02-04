@@ -104,7 +104,6 @@ module.exports.edit = async (req, res) => {
         record: record,
         roles: roles,
     })
-    console.log(record)
 }
 
 

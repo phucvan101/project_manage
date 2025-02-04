@@ -126,6 +126,7 @@ module.exports.decentralization = async (req, res) => {
         pageTitle: "Decentralization",
         records: records
     })
+    console.log(records);
 }
 
 // [PATCH] /admin/roles/decentralization

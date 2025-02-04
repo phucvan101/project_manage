@@ -25,6 +25,7 @@ module.exports.index = async (req, res) => {
     if (objectSearch.regex) {
         find.title = objectSearch.regex;
     }
+
     // Pagination: Phan trang 
     const countProducts = await Product.countDocuments(find);
     let objectPagination = paginationHelper(

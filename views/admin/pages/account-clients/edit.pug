@@ -1,0 +1,72 @@
+extends ../../layouts/default.pug 
+include ../../mixin/alert.pug
+
+block main
+    if (role.decentralization.includes ("account-clients_create")) 
+        h1(class="mb-4") Add new account client 
+        +alert-error(500)
+
+        form(
+            action=`${prefixAdmin}/account-clients/edit/${record.id}?_method=PATCH`,
+            method="POST"
+            enctype="application/x-www-form-urlencoded"
+
+        )
+            div(class="form-group")
+                label(for="fullName") Full name *
+                    input(
+                        type="text"
+                        class="form-control"
+                        id="fullName"
+                        name="fullName"
+                        value=record.fullName
+                    )
+            div(class="form-group")
+                label(for="email") Email *
+                    input(
+                        type="text"
+                        class="form-control"
+                        id="email"
+                        name="email"
+                        value=record.email
+                    )    
+                
+            div(class="form-group")
+                label(for="password") Password *
+                    input(
+                        type="password"
+                        class="form-control"
+                        id="password"
+                        name="password"
+                        placeholder="Leave empty if not changing password"
+                    )
+
+            div(class="form-group form-check form-check-inline")
+                input(
+                    type="radio"
+                    class="form-check-input"
+                    id="statusActive"
+                    name="status"
+                    value="active"
+                    checked 
+                )
+                label(for="statusActive" class="form-check-label") Active
+            
+            div(class="form-group form-check form-check-inline")
+                input(
+                    type="radio"
+                    class="form-check-input"
+                    id="statusInActive"
+                    name="status"
+                    value="inactive"
+                )
+                label(for="statusActive" class="form-check-label") InActive
+            
+            div(class="form-group") 
+                button(
+                    type="submit"
+                    class="btn btn-primary"
+                ) Update
+            
+            
+            

@@ -1,11 +1,10 @@
 module.exports = (query) => {
     let objectSearch = {
-        keywords: "",
+        keyword: "",
     };
     if (query.keyword) {
-        objectSearch.keyword = query.keyword
-        const regex = new RegExp(objectSearch.keyword, "i"); // case insensitive 
-        objectSearch.regex = regex;
+        objectSearch.keyword = query.keyword.trim(); // loại bỏ khoảng trắng
+        objectSearch.regex = new RegExp(objectSearch.keyword, "i"); // case insensitive 
     }
     return objectSearch
 }
