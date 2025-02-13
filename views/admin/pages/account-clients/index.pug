@@ -30,7 +30,7 @@ block main
                             th Full Name
                             th Email 
                             th Status 
-                            //- th Editor 
+                            th Editor 
                             th Activity 
                     
                     tbody 
@@ -61,12 +61,12 @@ block main
                                 //-     p #{item.accountFullName}
                                 //-     p 
                                 //-         +formatDateTime(item.createdBy.createdAt)
-                                //- td 
-                                //-     - const updatedBy = item.updatedBy.slice(-1)[0]
-                                //-     if (updatedBy)
-                                //-         p #{item.accountFullNameEdit}
-                                //-         p 
-                                //-             +formatDateTime(updatedBy.updatedAt)
+                                td 
+                                    - const updatedBy = item.updatedBy.slice(-1)[0]
+                                    if (updatedBy)
+                                        p #{item.accountFullNameEdit}
+                                        p 
+                                            +formatDateTime(updatedBy.updatedAt)
                                 td 
                                     a(
                                         class="btn btn-secondary btn-sm"

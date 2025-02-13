@@ -39,20 +39,20 @@ module.exports.index = async (req, res) => {
     // end pagination
     const recordClients = await User.find(find).select("-password -tokenUser").limit(objectPagination.limitItems).skip(objectPagination.skip);
     const records = await Account.find(find).select("-password -token")
-    for (const record of records) {
+    for (const record of recordClients) {
         // info permission 
-        const role = await Role.findOne({
-            _id: record.role_id,
-            deleted: false,
-        })
-        record.role = role;
+        // const role = await Role.findOne({
+        //     _id: record.role_id,
+        //     deleted: false,
+        // })
+        // record.role = role;
         // info creator
-        const user = await Account.findOne({
-            _id: record.createdBy.account_id
-        })
-        if (user) {
-            record.accountFullName = user.fullName;
-        }
+        // const user = await Account.findOne({
+        //     _id: record.createdBy.account_id
+        // })
+        // if (user) {
+        //     record.accountFullName = user.fullName;
+        // }
         // info editor
         const updatedBy = record.updatedBy.slice(-1)[0];
         if (updatedBy) {
@@ -64,6 +64,17 @@ module.exports.index = async (req, res) => {
 
         // console.log(updatedBy)
     }
+
+    // //info editor 
+    // const updatedBy = record.updatedBy.updatedBy.slice(-1)[0]; // lấy tên người đã sửa cuối cùng trong mảng những người đã sửa
+    // if (updatedBy) {
+    //     const userUpdate = await User.findOne({
+    //         _id: updatedBy.account_id
+    //     })
+    //     recordClients.accountFullNameEdit = userUpdate.fullName
+    // }
+    // // end info editor
+
     res.render('admin/pages/account-clients/index.pug', {
         pageTitle: "Account Clients",
         recordClients: recordClients,
@@ -144,7 +155,15 @@ module.exports.editPatch = async (req, res) => {
                 delete req.body.password;
             }
             try {
-                await User.updateOne({ _id: id }, req.body);
+                const updatedBy = {
+                    account_id: res.locals.user.id,
+                    updatedAt: new Date(),
+                }
+                console.log(updatedBy)
+                await User.updateOne({ _id: id }, {
+                    ...req.body,
+                    $push: { updatedBy: updatedBy }
+                });
 
             } catch (err) {
                 req.flash("success", "User updated failed");
@@ -156,7 +175,7 @@ module.exports.editPatch = async (req, res) => {
     }
 }
 
-// [DELETE] /admin/account-clients/edit/:id 
+// [DELETE] /admin/account-clients/delete/:id 
 module.exports.deleteAccountClient = async (req, res) => {
     const decentralization = res.locals.role.decentralization;
     if (decentralization.includes("account-clients_delete")) {
@@ -165,6 +184,10 @@ module.exports.deleteAccountClient = async (req, res) => {
         try {
             await User.updateOne({ _id: id }, {
                 deleted: true,
+                deletedBy: {
+                    account_id: res.locals.user.id,
+                    deletedAt: new Date(),
+                }
             })
             req.flash('success', 'Account deleted successfully')
         } catch (err) {
